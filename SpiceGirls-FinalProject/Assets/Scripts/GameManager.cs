@@ -14,12 +14,28 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        // We removed DontDestroyOnLoad. 
+        // This allows the Main Menu and Level 1 to each have their own safe GameManager!
         if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
     }
 
+    // ==========================================
+    // MAIN MENU
+    // ==========================================
+    public void StartGame()
+    {
+        Time.timeScale = 1f; // Ensures the game isn't paused from a previous Game Over
+
+        // IMPORTANT: Change "GameLevel" to the exact name of your teammate's Level 1 scene file!
+        SceneManager.LoadScene("MainGame");
+    }
+
+    // ==========================================
+    // LEVEL LOGIC
+    // ==========================================
     public void GameOver()
     {
         if (isGameOver) return;
@@ -52,7 +68,7 @@ public class GameManager : MonoBehaviour
         if (nextScene < SceneManager.sceneCountInBuildSettings)
             SceneManager.LoadScene(nextScene);
         else
-            WinGame(); // No more levels → show win screen
+            WinGame();
     }
 
     public void RestartGame()
